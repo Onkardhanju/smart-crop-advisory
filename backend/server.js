@@ -8,25 +8,21 @@ connectDB();
 
 const app = express();
 
-// ✅ Updated CORS for production
+// ✅ Allow ALL origins (easiest fix for deployment)
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    process.env.FRONTEND_URL
-  ],
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
 
-// Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/farms', require('./routes/farmRoutes'));
 app.use('/api/crops', require('./routes/cropRoutes'));
 app.use('/api/weather', require('./routes/weatherRoutes'));
 app.use('/api/advisory', require('./routes/advisoryRoutes'));
 
-// Test route
 app.get('/', (req, res) => {
   res.json({
     message: 'Smart Crop Advisory API is running!',
